@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript Example</title>
+  <script>
+    function showAlert() {
+      alert("Button clicked!");
+    }
+  </script>
+</head>
+<body>
+  <h1>JavaScript Example</h1>
+  <button onclick="showAlert()">Click Me</button>
+</body>
+</html>
