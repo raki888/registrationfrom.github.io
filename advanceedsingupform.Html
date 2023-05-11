@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Signup Form</title>
+    <style>
+      input[type="text"], input[type="password"], select {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Signup Form</h2>
+    <form id="signup-form" method="POST">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      <span id="username-error" class="error"></span>
+
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" placeholder="Enter your email" required>
+      <span id="email-error" class="error"></span>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <span id="password-error" class="error"></span>
+
+      <input type="submit" value="Signup">
+    </form>
+
+    <script>
+      const form = document.getElementById('signup-form');
+      const username = document.getElementById('username');
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (validateForm()) {
+          submitForm();
+        }
+      });
+
+      function validateForm() {
+        let isValid = true;
+
+        if (username.value === '') {
+          document.getElementById('username-error').textContent = 'Please enter your username';
+          isValid = false;
+        } else {
+          document.getElementById('username-error').textContent = '';
+        }
+
+        if (email.value === '') {
+          document.getElementById('email-error').textContent = 'Please enter your email';
+          isValid = false;
+        } else {
+          document.getElementById('email-error').textContent = '';
+        }
+
+        if (password.value === '') {
+          document.getElementById('password-error').textContent = 'Please enter your password';
+          isValid = false;
+        } else {
+          document.getElementById('password-error').textContent = '';
+        }
+
+        return isValid;
+      }
+
+      function submitForm() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'signup.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const response = JSON.parse(this.responseText);
+            if (response.success) {
+              alert('Signup successful');
+              form.reset();
+            } else {
+              alert('Signup failed');
+            }
+          }
+        }
+        const data = `username=${username.value}&email=${email.value}&password=${password.value}`;
+        xhr.send(data);
+      }
+    </script>
+  </body>
+</html>
